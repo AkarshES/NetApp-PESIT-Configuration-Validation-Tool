@@ -20,7 +20,7 @@ parser Test:
                 OB {{i = []}} 
                 (key {{key = key}}
                     (
-                    (OB subblock<<{}>> CB{{i.append((key,subblock))}})
+                    (OB subblock<<{}>> CB{{i.append({key:subblock})}})
                     |
                     (value {{i.append((key,value.lstrip()))}})
                     )

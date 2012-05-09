@@ -49,7 +49,7 @@ class Test(runtime.Parser):
                 OB = self._scan('OB', context=_context)
                 subblock = self.subblock({}, _context)
                 CB = self._scan('CB', context=_context)
-                i.append((key,subblock))
+                i.append({key:subblock})
             else: # == 'value'
                 value = self._scan('value', context=_context)
                 i.append((key,value.lstrip()))
