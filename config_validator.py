@@ -1,23 +1,24 @@
 from jinja2 import Template
 import re
-class block: 
-    """the class def to be used next for storing a blocks information"""
-    name = "defualt" #name of block
-    kvps ={} #dict of key-value pairs
-data = ""
-def render_template():
+import test_parser
+
+def render_template(data):
     """Renders a template using the data passed to it"""
-    global data
     t = """
 {{ title }} {
-    {% for kv in kvps %}
-    {{kv}} {{kvps[kv]}}
-    {% endfor %}
+    {% for kv in kvps %}{%if kv[0]%}
+        {{kv[0]}} {{kv[1]}}
+    {%else%}
+        {{kv.keys()[0]}} {
+            {%for key in kv[kv.keys()[0]]%}
+                 {{key}} {{kv[kv.keys()[0][key]]}}
+            {%endfor%}
+        }{%endif%}{% endfor %}
 }
 """
     template = Template(t)
-
-    data =  template.render(title='define',kvps={'key1':'value1','key2':'value2'})
+    print template.render(title = data.keys()[0],kvps=data[data.keys()[0]])
+#    data =  template.render(title='define',kvps={'key1':'value1','key2':'value2'})
 
 def read_file():
     """reads file with the config which is then split back into blocks """
@@ -25,5 +26,7 @@ def read_file():
     print re.findall("[a-zA-Z]+ \{(.+|\n)+\}",data)
 
 if __name__ == "__main__":
-    render_template()
-    print data
+    global data
+    data = test_parser.parse()#render_template()
+    render_template(data)
+#    print data
