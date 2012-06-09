@@ -17,16 +17,13 @@ def render_template(data):
 }
 """
     template = Template(t)
-    print template.render(title = data.keys()[0],kvps=data[data.keys()[0]])
-#    data =  template.render(title='define',kvps={'key1':'value1','key2':'value2'})
-
-def read_file():
-    """reads file with the config which is then split back into blocks """
-    global data
-    print re.findall("[a-zA-Z]+ \{(.+|\n)+\}",data)
+    keys = data.keys()
+    print keys
+    for key in keys:
+        print template.render(title = key, kvps = data[key])
 
 if __name__ == "__main__":
     global data
-    data = test_parser.parse()#render_template()
+    data = test_parser.parse("/home/akarsh/Documents/tmp/config2.conf")#render_template()
     render_template(data)
 #    print data
