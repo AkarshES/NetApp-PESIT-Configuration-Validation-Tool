@@ -30,17 +30,16 @@ class Test(runtime.Parser):
         while self._peek('eof', 'name', '"##.+"', context=_context) != 'eof':
             _token = self._peek('name', '"##.+"', context=_context)
             if _token == 'name':
-                block = self.block(_context)
+                block = self.block({}, _context)
             else: # == '"##.+"'
                 comment = self.comment(_context)
         eof = self._scan('eof', context=_context)
         return global_vars
 
-    def block(self, _parent=None):
-        _context = self.Context(_parent, self._scanner, 'block', [])
+    def block(self, D, _parent=None):
+        _context = self.Context(_parent, self._scanner, 'block', [D])
         name = self._scan('name', context=_context)
         OB = self._scan('OB', context=_context)
-        i = []
         while self._peek('CB', 'key', context=_context) == 'key':
             key = self._scan('key', context=_context)
             key = key
@@ -49,12 +48,12 @@ class Test(runtime.Parser):
                 OB = self._scan('OB', context=_context)
                 subblock = self.subblock({}, _context)
                 CB = self._scan('CB', context=_context)
-                i.append({key:subblock})
+                D[key] = subblock
             else: # == 'value'
                 value = self._scan('value', context=_context)
-                i.append((key,value.lstrip()))
+                D[key] = value.lstrip()
         CB = self._scan('CB', context=_context)
-        global_vars[name] = i;#print i
+        global_vars[name] = D;#print i
 
     def subblock(self, V, _parent=None):
         _context = self.Context(_parent, self._scanner, 'subblock', [V])

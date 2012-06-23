@@ -6,9 +6,9 @@ def render_template(data):
     """Renders a template using the data passed to it"""
     t = \
     """{{ title }} {
-    {% for kv in kvps %}{%if kv[0]%}    {{kv[0]}} {{kv[1]}}
-    {%else%}    {{kv.keys()[0]}} {
-            {%for key in kv[kv.keys()[0]]%} {{key}} {{kv[kv.keys()[0]][key]}}
+    {% for key in kvps.keys() %}{% if kvps[key] is not mapping%}    {{key}} {{kvps[key]}}
+    {%else%}    {{key}} {
+            {%for k in kvps[key].keys()%} {{k}} {{kvps[key][k]}}
             {%endfor%}
         }{%endif%}{% endfor %}
 }
@@ -17,6 +17,11 @@ def render_template(data):
     keys = data.keys()
     for key in keys:
         print template.render(title = key, kvps = data[key])
+
+#def compare(d1,d2):
+#    if d1 == d2: return 0
+#    elif len(d1) is not len(d1):
+
 
 if __name__ == "__main__":
     global data
